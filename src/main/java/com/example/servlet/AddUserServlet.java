@@ -26,16 +26,14 @@ public class AddUserServlet extends HttpServlet {
 
         Warehouse warehouse = Warehouse.getInstance();
 
-        if (firstName.isEmpty() && lastName.isEmpty()){
+        if (!firstName.isEmpty() && !lastName.isEmpty()){
             User user = new User();
             user.setFirstName(firstName);
             user.setLastName(lastName);
             warehouse.addUser(user);
+
+            req.setAttribute("user",user);
         }
-
-        Set<User> userSet = warehouse.getUsers();
-
-        req.setAttribute("users",userSet);
 
         req.getRequestDispatcher("/jsp/add.jsp")
                 .forward(req, resp);
