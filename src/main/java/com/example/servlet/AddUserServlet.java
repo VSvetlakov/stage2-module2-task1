@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Set;
 
 @WebServlet("/add")
 public class AddUserServlet extends HttpServlet {
@@ -23,15 +24,18 @@ public class AddUserServlet extends HttpServlet {
         String firstName = req.getParameter("firstName");
         String lastName  = req.getParameter("lastName");
 
+        Warehouse warehouse = Warehouse.getInstance();
+
         if (firstName.isEmpty() && lastName.isEmpty()){
             User user = new User();
             user.setFirstName(firstName);
             user.setLastName(lastName);
-
-            Warehouse warehouse = Warehouse.getInstance();
-
             warehouse.addUser(user);
         }
+
+        Set<User> userSet = warehouse.getUsers();
+
+        req.setAttribute("users",userSet);
 
         req.getRequestDispatcher("/jsp/add.jsp")
                 .forward(req, resp);
